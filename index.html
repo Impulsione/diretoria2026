@@ -69,18 +69,21 @@
             font-weight: 600;
         }
 
-        /* Corrigido: Seletor para os botões do workflow */
-        .step-btn.active-step {
+        .step-card.active-step {
             border-left: 4px solid #EA580C;
             background-color: #FFF7ED; /* Orange 50 */
-            color: #C2410C;
         }
     </style>
     
     <!-- Placeholder Comments -->
-    <!-- Chosen Palette: Warm Neutrals & Professional Orange. -->
-    <!-- Application Structure Plan: Dashboard interativo com seções de Liderança, Responsabilidades, Fluxo, Equipa e Decisões. -->
-    <!-- Visualization & Content Choices: Radar Chart para perfis, Lista dinâmica para responsabilidades e Grid de Equipe. -->
+    <!-- Chosen Palette: Warm Neutrals & Professional Orange. Background: Cool Gray 50 (#F9FAFB), Text: Gray 800 (#1F2937), Primary/Action: Orange 600 (#EA580C) - chosen to represent energy ("Impulsione") within a stable structure. -->
+    <!-- Application Structure Plan: The app is designed as an "Organizational Playbook" dashboard. It uses a top-navigation tab system to separate distinct mental models: 1) Leadership Profiles (Introduction to Personas), 2) Operations Dashboard (Data view of Responsibilities & Workflow), and 3) Decision Matrix (Interactive scenarios). This structure was chosen to move from the "Who" to the "How" and finally the "What if", allowing the user to progressively understand the agency's mechanics. -->
+    <!-- Visualization & Content Choices: 
+         1. Radar Chart (Chart.js): Visualizes the skill overlap and divergence between Letícia (Strategy/Sales) and Larissa (Ops/Delivery). Goal: Compare profiles instantly.
+         2. Interactive Workflow (DOM manipulation): A step-by-step interactive list replaces a static flowchart. Goal: Detail the complexity of the process without visual clutter.
+         3. Decision Cards (DOM manipulation): Interactive cards that reveal the decision-maker on click. Goal: Gamify the "Matriz de Decisão" for better retention.
+         4. Team Grid (HTML/Tailwind): Simple grid for support roles. Goal: Clean hierarchy display.
+         NO SVG used. NO Mermaid used. All icons are Unicode or CSS shapes. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
 </head>
@@ -96,24 +99,23 @@
                     </div>
                 </div>
                 <!-- Desktop Tabs -->
-                <div class="hidden lg:ml-6 lg:flex lg:space-x-8" id="desktop-nav">
+                <div class="hidden sm:ml-6 sm:flex sm:space-x-8" id="desktop-nav">
                     <button onclick="switchTab('overview')" class="nav-btn active-tab px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none">Liderança & Perfil</button>
                     <button onclick="switchTab('responsibilities')" class="nav-btn px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none">Responsabilidades</button>
                     <button onclick="switchTab('workflow')" class="nav-btn px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none">Fluxo & Operação</button>
-                    <button onclick="switchTab('team')" class="nav-btn px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none">Pessoas do Time</button>
                     <button onclick="switchTab('decisions')" class="nav-btn px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none">Matriz de Decisão</button>
                 </div>
-                <div class="-mr-2 flex items-center lg:hidden">
-                   <span class="text-xs text-gray-400">Arraste as abas abaixo</span>
+                <!-- Mobile Menu Button (Simple implementation) -->
+                <div class="-mr-2 flex items-center sm:hidden">
+                   <span class="text-xs text-gray-400">Menu via Tabs</span>
                 </div>
             </div>
         </div>
-        <!-- Mobile Tabs -->
-        <div class="lg:hidden flex overflow-x-auto px-4 pb-2 space-x-4 border-b border-gray-100 scrollbar-hide">
+        <!-- Mobile Tabs (Horizontal Scroll) -->
+        <div class="sm:hidden flex overflow-x-auto px-4 pb-2 space-x-4 border-b border-gray-100 scrollbar-hide">
             <button onclick="switchTab('overview')" class="mobile-nav-btn text-nowrap px-3 py-2 text-sm font-medium text-orange-600 bg-orange-50 rounded-full">Liderança</button>
             <button onclick="switchTab('responsibilities')" class="mobile-nav-btn text-nowrap px-3 py-2 text-sm font-medium text-gray-600">Responsabilidades</button>
             <button onclick="switchTab('workflow')" class="mobile-nav-btn text-nowrap px-3 py-2 text-sm font-medium text-gray-600">Fluxo</button>
-            <button onclick="switchTab('team')" class="mobile-nav-btn text-nowrap px-3 py-2 text-sm font-medium text-gray-600">Time</button>
             <button onclick="switchTab('decisions')" class="mobile-nav-btn text-nowrap px-3 py-2 text-sm font-medium text-gray-600">Decisão</button>
         </div>
     </nav>
@@ -143,6 +145,7 @@
                             <div class="h-12 w-12 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-xl">LE</div>
                         </div>
                         <p class="text-gray-600 italic mb-6">"Olhar para fora e para o futuro."</p>
+                        
                         <div class="space-y-3">
                             <div class="flex items-start">
                                 <span class="text-orange-500 mr-2">➤</span>
@@ -172,6 +175,7 @@
                             <div class="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xl">LA</div>
                         </div>
                         <p class="text-gray-600 italic mb-6">"Olhar para dentro e para o presente."</p>
+                        
                         <div class="space-y-3">
                             <div class="flex items-start">
                                 <span class="text-blue-500 mr-2">➤</span>
@@ -190,6 +194,7 @@
                 </div>
             </div>
 
+            <!-- Visualization: Skill Radar -->
             <div class="bg-white rounded-xl shadow p-6 border border-gray-100">
                 <div class="mb-4">
                     <h3 class="text-lg font-semibold text-gray-900">Complementaridade de Perfis</h3>
@@ -211,6 +216,7 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Interactive List Column -->
                 <div class="lg:col-span-1 space-y-4">
                     <div class="bg-white rounded-lg shadow p-4 border-l-4 border-orange-500 cursor-pointer hover:bg-orange-50 transition-colors" onclick="showResponsibility('commercial')">
                         <h3 class="font-bold text-gray-800">Comercial & Vendas</h3>
@@ -220,22 +226,52 @@
                         <h3 class="font-bold text-gray-800">Operação & Delivery</h3>
                         <p class="text-xs text-gray-500">Campanhas, copy, design e processos.</p>
                     </div>
-                    <div class="bg-white rounded-lg shadow p-4 border-l-4 border-blue-900 cursor-pointer hover:bg-blue-50 transition-colors" onclick="showResponsibility('clientes')">
-                        <h3 class="font-bold text-gray-800">Gestão & Sucesso do cliente</h3>
-                        <p class="text-xs text-gray-500">Relacionamento, relatórios e estratégia.</p>
-                    </div>
                     <div class="bg-white rounded-lg shadow p-4 border-l-4 border-purple-500 cursor-pointer hover:bg-purple-50 transition-colors" onclick="showResponsibility('admin')">
                         <h3 class="font-bold text-gray-800">Administrativo & RH</h3>
                         <p class="text-xs text-gray-500">Financeiro, cultura e contratações.</p>
                     </div>
+                    <!-- NOVO CARD: Gestão & Sucesso do Cliente -->
+                    <div class="bg-white rounded-lg shadow p-4 border-l-4 border-green-500 cursor-pointer hover:bg-green-50 transition-colors" onclick="showResponsibility('client_success')">
+                        <h3 class="font-bold text-gray-800">Gestão & Sucesso do Cliente</h3>
+                        <p class="text-xs text-gray-500">Relacionamento, relatórios e estratégia.</p>
+                    </div>
                 </div>
 
+                <!-- Detail View Column -->
                 <div class="lg:col-span-2">
-                    <div id="resp-detail-card" class="bg-white rounded-xl shadow-lg p-8 h-full border border-gray-100 min-h-[300px]">
+                    <div id="resp-detail-card" class="bg-white rounded-xl shadow-lg p-8 h-full border border-gray-100">
+                        <!-- Dynamic Content Loaded Here -->
                         <div class="text-center h-full flex flex-col justify-center items-center text-gray-400">
                             <span class="text-4xl mb-4">👆</span>
                             <p>Selecione uma área ao lado para ver os detalhes.</p>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Support Team Grid -->
+            <div class="mt-12">
+                <h3 class="text-xl font-bold text-gray-900 mb-6">Estrutura da Equipe de Apoio</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-gray-100 p-4 rounded-lg text-center">
+                        <div class="text-2xl mb-2">✍️</div>
+                        <h4 class="font-bold text-gray-800">Copywriter</h4>
+                        <p class="text-xs text-gray-600">Foco em Performance & Persuasão</p>
+                    </div>
+                    <div class="bg-gray-100 p-4 rounded-lg text-center">
+                        <div class="text-2xl mb-2">🎨</div>
+                        <h4 class="font-bold text-gray-800">Designer</h4>
+                        <p class="text-xs text-gray-600">Foco em Direct Response (CTR)</p>
+                    </div>
+                    <div class="bg-gray-100 p-4 rounded-lg text-center">
+                        <div class="text-2xl mb-2">📊</div>
+                        <h4 class="font-bold text-gray-800">Gestor Jr.</h4>
+                        <p class="text-xs text-gray-600">Apoio técnico (Montagem)</p>
+                    </div>
+                    <div class="bg-gray-100 p-4 rounded-lg text-center">
+                        <div class="text-2xl mb-2">💼</div>
+                        <h4 class="font-bold text-gray-800">Back-office</h4>
+                        <p class="text-xs text-gray-600">Jurídico e Financeiro (Sob demanda)</p>
                     </div>
                 </div>
             </div>
@@ -245,301 +281,405 @@
         <section id="workflow" class="tab-content hidden fade-in">
             <div class="mb-8">
                 <h2 class="text-2xl font-bold text-gray-900">Fluxo de Trabalho do Cliente</h2>
-                <p class="mt-2 text-gray-600">A jornada do cliente desenhada para escala.</p>
+                <p class="mt-2 text-gray-600">
+                    A jornada do cliente dentro da Impulsione foi desenhada para garantir que a estratégia (Letícia) seja traduzida perfeitamente em execução técnica (Larissa).
+                </p>
             </div>
 
+            <!-- Steps Visualization -->
             <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
                 <div class="grid grid-cols-1 md:grid-cols-3">
+                    
+                    <!-- Step List -->
                     <div class="bg-gray-50 border-r border-gray-200 p-4 space-y-2">
-                        <button onclick="updateWorkflow(0)" class="step-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-gray-600 hover:bg-white transition-all active-step" id="step-0">1. Venda</button>
-                        <button onclick="updateWorkflow(1)" class="step-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-gray-600 hover:bg-white transition-all" id="step-1">2. Onboarding</button>
-                        <button onclick="updateWorkflow(2)" class="step-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-gray-600 hover:bg-white transition-all" id="step-2">3. Estratégia</button>
-                        <button onclick="updateWorkflow(3)" class="step-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-gray-600 hover:bg-white transition-all" id="step-3">4. Briefing</button>
-                        <button onclick="updateWorkflow(4)" class="step-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-gray-600 hover:bg-white transition-all" id="step-4">5. Execução</button>
-                        <button onclick="updateWorkflow(5)" class="step-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-gray-600 hover:bg-white transition-all" id="step-5">6. Relatório</button>
+                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Etapas do Processo</h3>
+                        <button onclick="updateWorkflow(0)" class="step-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-gray-600 hover:bg-white hover:shadow-sm focus:outline-none transition-all active-step" id="step-0">1. Venda</button>
+                        <button onclick="updateWorkflow(1)" class="step-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-gray-600 hover:bg-white hover:shadow-sm focus:outline-none transition-all" id="step-1">2. Onboarding</button>
+                        <button onclick="updateWorkflow(2)" class="step-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-gray-600 hover:bg-white hover:shadow-sm focus:outline-none transition-all" id="step-2">3. Estratégia</button>
+                        <button onclick="updateWorkflow(3)" class="step-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-gray-600 hover:bg-white hover:shadow-sm focus:outline-none transition-all" id="step-3">4. Briefing</button>
+                        <button onclick="updateWorkflow(4)" class="step-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-gray-600 hover:bg-white hover:shadow-sm focus:outline-none transition-all" id="step-4">5. Execução</button>
+                        <button onclick="updateWorkflow(5)" class="step-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-gray-600 hover:bg-white hover:shadow-sm focus:outline-none transition-all" id="step-5">6. Relatório</button>
                     </div>
-                    <div class="col-span-2 p-8 flex flex-col justify-center min-h-[300px]">
-                        <div id="workflow-content"></div>
+
+                    <!-- Step Detail -->
+                    <div class="col-span-2 p-8 flex flex-col justify-center">
+                        <div id="workflow-content">
+                            <!-- Dynamic Content -->
+                        </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- 2026 Context Alert -->
+            <div class="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6 flex items-start">
+                <div class="text-blue-500 text-2xl mr-4">💡</div>
+                <div>
+                    <h4 class="font-bold text-blue-900">Dica de Sucesso para 2026</h4>
+                    <p class="text-sm text-blue-800 mt-1">
+                        A Letícia deve dedicar <strong>70% do tempo analisando criativos</strong> e apenas 30% no gerenciador. O segredo da performance agora é o Conteúdo e a Estratégia Visual, não apenas a configuração técnica.
+                    </p>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION 4: TEAM -->
-        <section id="team" class="tab-content hidden fade-in">
-            <div class="mb-10 text-center">
-                <h2 class="text-2xl font-bold text-gray-900">Composição do Time</h2>
-                <p class="mt-2 text-gray-600">Papéis essenciais para a escala da Impulsione.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="bg-white p-6 rounded-xl shadow border border-gray-100">
-                    <div class="text-2xl mb-3">✍️</div>
-                    <h3 class="font-bold text-gray-900">Copywriter de Performance</h3>
-                    <p class="text-sm text-gray-600 mt-2">Escrita persuasiva focada em anúncios que convertem cliques em vendas.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow border border-gray-100">
-                    <div class="text-2xl mb-3">🎨</div>
-                    <h3 class="font-bold text-gray-900">Designer de Resposta Direta</h3>
-                    <p class="text-sm text-gray-600 mt-2">Criação de imagens e vídeos com foco em alto CTR (Taxa de Clique).</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow border border-gray-100">
-                    <div class="text-2xl mb-3">📊</div>
-                    <h3 class="font-bold text-gray-900">Gestor de Tráfego Jr./Pleno</h3>
-                    <p class="text-sm text-gray-600 mt-2">Montagem técnica e monitorização diária. Reporta à Larissa.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow border border-gray-100">
-                    <div class="text-2xl mb-3">💼</div>
-                    <h3 class="font-bold text-gray-900">Assistente Administrativo</h3>
-                    <p class="text-sm text-gray-600 mt-2">Faturas, cobranças e organização administrativa. Reporta à Letícia.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow border border-gray-100">
-                    <div class="text-2xl mb-3">🎬</div>
-                    <h3 class="font-bold text-gray-900">Editor de Vídeo (Freelance)</h3>
-                    <p class="text-sm text-gray-600 mt-2">Cortes dinâmicos e legendagem para anúncios em vídeo e Reels.</p>
-                </div>
-                <div class="bg-orange-50 p-6 rounded-xl border border-orange-200 flex items-center justify-center">
-                    <p class="text-orange-800 font-bold text-center">Foco em Resultados Reais</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 5: DECISION MATRIX -->
+        <!-- SECTION 4: DECISION MATRIX -->
         <section id="decisions" class="tab-content hidden fade-in">
             <div class="text-center mb-10">
                 <h2 class="text-2xl font-bold text-gray-900">Matriz de Decisão</h2>
-                <p class="mt-2 text-gray-600">Passe o mouse ou clique para ver quem decide.</p>
+                <p class="mt-2 text-gray-600">Quem bate o martelo? Clique nos cartões abaixo para revelar quem tem a palavra final em cada cenário.</p>
             </div>
+
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Cards -->
-                <div class="group h-48 relative overflow-hidden bg-white rounded-xl shadow border border-gray-200 cursor-pointer">
-                    <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center transition-opacity duration-300 group-hover:opacity-0">
-                        <span class="text-3xl mb-2">🧑‍💻</span>
-                        <h3 class="font-bold">Contratar técnico?</h3>
-                    </div>
-                    <div class="absolute inset-0 bg-blue-600 flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <span class="text-2xl font-bold">Larissa</span>
-                        <p class="text-xs">Gestão técnica.</p>
+                
+                <!-- Decision Card 1 -->
+                <div class="group perspective-container cursor-pointer h-48" onclick="flipCard(this)">
+                    <div class="relative w-full h-full transition-all duration-500 transform-style-3d bg-white rounded-xl shadow border border-gray-200 hover:shadow-lg flex items-center justify-center p-6 text-center">
+                        <div>
+                            <span class="text-3xl block mb-2">🧑‍💻</span>
+                            <h3 class="font-bold text-gray-800">Contratar novo técnico?</h3>
+                            <p class="text-xs text-gray-400 mt-2">(Clique para revelar)</p>
+                        </div>
+                        <!-- Revealed State (Hidden by default logic, handled by JS swap for simplicity) -->
+                        <div class="absolute inset-0 bg-blue-600 rounded-xl flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duração-300">
+                            <span class="text-2xl font-bold">Larissa</span>
+                            <p class="text-xs px-4 mt-2">Ela gerencia a equipe técnica.</p>
+                        </div>
                     </div>
                 </div>
-                <div class="group h-48 relative overflow-hidden bg-white rounded-xl shadow border border-gray-200 cursor-pointer">
+
+                <!-- Decision Card 2 -->
+                <div class="group cursor-pointer h-48 relative overflow-hidden bg-white rounded-xl shadow border border-gray-200">
                     <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center transition-opacity duration-300 group-hover:opacity-0">
-                        <span class="text-3xl mb-2">💰</span>
-                        <h3 class="font-bold">Descontos?</h3>
+                        <span class="text-3xl block mb-2">💰</span>
+                        <h3 class="font-bold text-gray-800">Dar desconto no contrato?</h3>
+                        <p class="text-xs text-gray-400 mt-2">(Clique para revelar)</p>
                     </div>
                     <div class="absolute inset-0 bg-orange-600 flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <span class="text-2xl font-bold">Letícia</span>
-                        <p class="text-xs">Financeiro.</p>
+                        <p class="text-xs px-4 mt-2">Ela cuida do financeiro.</p>
                     </div>
                 </div>
-                <div class="group h-48 relative overflow-hidden bg-white rounded-xl shadow border border-gray-200 cursor-pointer">
+
+                <!-- Decision Card 3 -->
+                <div class="group cursor-pointer h-48 relative overflow-hidden bg-white rounded-xl shadow border border-gray-200">
                     <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center transition-opacity duration-300 group-hover:opacity-0">
-                        <span class="text-3xl mb-2">📈</span>
-                        <h3 class="font-bold">Estratégia?</h3>
+                        <span class="text-3xl block mb-2">📈</span>
+                        <h3 class="font-bold text-gray-800">Mudar estratégia ruim?</h3>
+                        <p class="text-xs text-gray-400 mt-2">(Clique para revelar)</p>
                     </div>
                     <div class="absolute inset-0 bg-purple-600 flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <span class="text-xl font-bold">Ambas</span>
-                        <p class="text-xs">Reunião semanal.</p>
+                        <span class="text-xl font-bold">As Duas</span>
+                        <p class="text-xs px-4 mt-2">Reunião: Estratégia + Operação.</p>
                     </div>
                 </div>
-                <div class="group h-48 relative overflow-hidden bg-white rounded-xl shadow border border-gray-200 cursor-pointer">
+
+                <!-- Decision Card 4 -->
+                <div class="group cursor-pointer h-48 relative overflow-hidden bg-white rounded-xl shadow border border-gray-200">
                     <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center transition-opacity duration-300 group-hover:opacity-0">
-                        <span class="text-3xl mb-2">📢</span>
-                        <h3 class="font-bold">Marketing Próprio?</h3>
+                        <span class="text-3xl block mb-2">📢</span>
+                        <h3 class="font-bold text-gray-800">Marketing da Impulsione?</h3>
+                        <p class="text-xs text-gray-400 mt-2">(Clique para revelar)</p>
                     </div>
                     <div class="absolute inset-0 bg-orange-600 flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <span class="text-2xl font-bold">Letícia</span>
-                        <p class="text-xs">Crescimento da marca.</p>
+                        <p class="text-xs px-4 mt-2">Visão de crescimento da marca.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Communication Tip -->
+            <div class="mt-12 bg-gray-800 rounded-xl p-8 text-white text-center">
+                <h3 class="text-xl font-bold mb-4">Regra de Ouro: Comunicação</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left max-w-4xl mx-auto">
+                    <div class="bg-gray-700 p-4 rounded-lg">
+                        <h4 class="font-bold text-orange-400 mb-2">Reunião de Sócias (Semanal)</h4>
+                        <p class="text-sm text-gray-300">1h exclusiva para falar DA empresa (lucro, equipe, planos), não dos clientes.</p>
+                    </div>
+                    <div class="bg-gray-700 p-4 rounded-lg">
+                        <h4 class="font-bold text-blue-400 mb-2">Slack / Discord</h4>
+                        <p class="text-sm text-gray-300">Separe os assuntos. Não misture demandas de clientes no WhatsApp pessoal.</p>
                     </div>
                 </div>
             </div>
         </section>
+
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white border-t border-gray-800 mt-auto">
-        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-                <div>
-                    <span class="text-2xl font-bold tracking-tight">Impulsione<span class="text-orange-500">.</span></span>
-                    <p class="mt-4 text-gray-400 text-sm leading-relaxed">Assessoria de Performance focada em Meta Ads. Transformamos investimento em faturamento real através de dados e estratégia.</p>
-                </div>
-                <div>
-                    <h4 class="text-orange-500 font-bold uppercase tracking-widest text-xs mb-4">Filosofia</h4>
-                    <ul class="text-gray-400 text-sm space-y-2">
-                        <li><strong>Missão:</strong> Escalar negócios com anúncios inteligentes.</li>
-                        <li><strong>Visão:</strong> Ser referência em ROI real no Meta Ads.</li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-orange-500 font-bold uppercase tracking-widest text-xs mb-4">Canais</h4>
-                    <ul class="text-gray-400 text-sm space-y-2">
-                        <li>💬 Slack (Operacional)</li>
-                        <li>📅 Meet (Reuniões)</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="mt-12 pt-8 border-t border-gray-800 text-center">
-                <p class="text-xs text-gray-500">Impulsione Agência &copy; 2026 - Propriedade de Letícia & Larissa.</p>
-            </div>
+    <footer class="bg-white border-t border-gray-200 mt-auto">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <p class="text-center text-sm text-gray-500">Impulsione Agência &copy; 2026 - Documento Interno de Estruturação.</p>
         </div>
     </footer>
 
+    <!-- JavaScript Logic -->
     <script>
         // --- DATA ---
+        
         const responsibilitiesData = {
             commercial: {
-                title: "Comercial & Vendas (Letícia)",
+                title: "Comercial & Vendas (Liderança: Letícia)",
                 color: "text-orange-600",
                 bg: "bg-orange-50",
                 border: "border-orange-200",
-                icon: "🚀",
+                icon: "🤝",
                 tasks: [
                     "Prospecção de novos clientes",
                     "Reuniões de vendas e fechamento",
-                    "Marketing estratégico da Impulsione",
-                    "Relatórios de crescimento comercial"
+                    "Onboarding inicial (Boas-vindas)",
+                    "Gestão de crises (Relacionamento)",
+                    "Apresentação de Relatórios de Negócio"
                 ]
             },
             delivery: {
-                title: "Operação & Delivery (Larissa)",
+                title: "Operação & Delivery (Liderança: Larissa)",
                 color: "text-blue-600",
                 bg: "bg-blue-50",
                 border: "border-blue-200",
                 icon: "⚙️",
                 tasks: [
                     "Gestão do time de Copy e Design",
-                    "Revisão técnica das contas (Misto)",
-                    "Análise de ROAS e otimizações (Misto)",
-                    "Criação de checklists e processos"
-                ]
-            },
-            clientes: {
-                title: "Sucesso do Cliente (Misto)",
-                color: "text-purple-600",
-                bg: "bg-purple-50",
-                border: "border-purple-200",
-                icon: "🤝",
-                tasks: [
-                    "Onboarding inicial (Boas-vindas)",
-                    "Definição de Funil de Marketing",
-                    "Gestão de crises e retenção",
-                    "Reuniões mensais de estratégia"
+                    "Revisão técnica das contas de anúncios (Letícia/Larissa)",
+                    "Análise de ROAS e otimizações (Letícia/Larissa)",
+                    "Criação de checklists e processos",
+                    "Extração de dados técnicos para relatório (Letícia/Larissa)"
                 ]
             },
             admin: {
-                title: "Administrativo & RH (Misto)",
+                title: "Administrativo & Estratégia (Misto)",
                 color: "text-purple-600",
                 bg: "bg-purple-50",
                 border: "border-purple-200",
                 icon: "🏛️",
                 tasks: [
                     "Financeiro e Fluxo de Caixa (Letícia)",
-                    "Interface Jurídico/Contábil (Letícia)",
-                    "Feedback de equipe e RH",
-                    "Treinamento técnico da equipe"
+                    "Feedback de equipe e RH (Letícia/Larissa)",
+                    "Definição de Funil de Vendas (Letícia desenha, Larissa executa)",
+                    "Treinamento técnico da equipe (Larissa)",
+                    "Interface com Jurídico/Contábil (Letícia)"
+                ]
+            },
+            // NOVO BLOCO: Gestão & Sucesso do Cliente
+            client_success: {
+                title: "Gestão & Sucesso do Cliente (Misto)",
+                color: "text-green-600",
+                bg: "bg-green-50",
+                border: "border-green-200",
+                icon: "🤝",
+                tasks: [
+                    "Sucesso do Cliente (Misto)",
+                    "Onboarding inicial (Boas-vindas)",
+                    "Definição de Funil de Marketing",
+                    "Gestão de crises e retenção",
+                    "Reuniões mensais de estratégia"
                 ]
             }
         };
 
         const workflowSteps = [
-            { title: "1. Venda", owner: "Letícia", color: "bg-orange-100 text-orange-800", desc: "Negociação e contrato." },
-            { title: "2. Onboarding", owner: "Letícia + Larissa", color: "bg-purple-100 text-purple-800", desc: "Reunião inicial conjunta." },
-            { title: "3. Estratégia", owner: "Letícia + Especialista", color: "bg-orange-100 text-orange-800", desc: "Definição da oferta e funil." },
-            { title: "4. Briefing", owner: "Larissa", color: "bg-blue-100 text-blue-800", desc: "Passagem para Copy e Design." },
-            { title: "5. Execução", owner: "Letícia", color: "bg-blue-100 text-blue-800", desc: "Subida e monitoramento diário." },
-            { title: "6. Relatório", owner: "Larissa -> Letícia", color: "bg-green-100 text-green-800", desc: "Apresentação de ROI para o cliente." }
+            {
+                title: "1. Venda",
+                owner: "Letícia",
+                color: "bg-orange-100 text-orange-800",
+                desc: "Negociação e assinatura do contrato. O foco aqui é alinhar expectativas e garantir que o cliente tem fit com a agência."
+            },
+            {
+                title: "2. Onboarding",
+                owner: "Letícia + Larissa",
+                color: "bg-purple-100 text-purple-800",
+                desc: "Reunião inicial conjunta. Letícia foca no relacionamento, Larissa foca em entender o produto e acessos técnicos."
+            },
+            {
+                title: "3. Estratégia",
+                owner: "Letícia + Especialista",
+                color: "bg-orange-100 text-orange-800",
+                desc: "Definição da oferta, público-alvo e funil. Letícia desenha o 'mapa' do tesouro."
+            },
+            {
+                title: "4. Briefing",
+                owner: "Larissa",
+                color: "bg-blue-100 text-blue-800",
+                desc: "Tradução da estratégia para a equipe. Larissa passa as demandas específicas para Copy e Design."
+            },
+            {
+                title: "5. Execução",
+                owner: "Letícia",
+                color: "bg-blue-100 text-blue-800",
+                desc: "Subida de campanhas, testes A/B e monitoramento diário. Letícia garante que nada quebre."
+            },
+            {
+                title: "6. Relatório",
+                owner: "Larissa (Prepara) -> Letícia (Apresenta)",
+                color: "bg-green-100 text-green-800",
+                desc: "Larissa extrai os dados frios. Letícia apresenta a visão de negócio e ROI para o cliente."
+            }
         ];
 
         // --- FUNCTIONS ---
+
+        // Tab Switching
         function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            // Hide all contents
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.add('hidden');
+            });
+            // Show selected
             document.getElementById(tabId).classList.remove('hidden');
 
-            // Desktop
+            // Update Desktop styles
             document.querySelectorAll('#desktop-nav button').forEach(btn => {
                 btn.classList.remove('active-tab', 'text-gray-900');
                 btn.classList.add('text-gray-500');
             });
-            
-            // Corrigido: Encontrar o botão certo de forma mais robusta
-            const desktopBtns = document.querySelectorAll('#desktop-nav button');
-            desktopBtns.forEach(btn => {
-                if(btn.getAttribute('onclick').includes(tabId)) {
-                    btn.classList.add('active-tab', 'text-gray-900');
-                    btn.classList.remove('text-gray-500');
-                }
-            });
+            const activeBtn = Array.from(document.querySelectorAll('#desktop-nav button')).find(b => b.onclick.toString().includes(tabId));
+            if(activeBtn) {
+                activeBtn.classList.add('active-tab', 'text-gray-900');
+                activeBtn.classList.remove('text-gray-500');
+            }
 
-            // Mobile
+            // Update Mobile styles
             document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
                 btn.classList.remove('bg-orange-50', 'text-orange-600');
                 btn.classList.add('text-gray-600');
             });
-            document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
-                if(btn.getAttribute('onclick').includes(tabId)) {
-                    btn.classList.add('bg-orange-50', 'text-orange-600');
-                    btn.classList.remove('text-gray-600');
-                }
-            });
+            const activeMobileBtn = Array.from(document.querySelectorAll('.mobile-nav-btn')).find(b => b.onclick.toString().includes(tabId));
+            if(activeMobileBtn) {
+                activeMobileBtn.classList.add('bg-orange-50', 'text-orange-600');
+                activeMobileBtn.classList.remove('text-gray-600');
+            }
 
-            if(tabId === 'overview') setTimeout(renderChart, 100);
+            // Render chart if opening overview for the first time or resize issues
+            if(tabId === 'overview') {
+                // Small timeout to ensure container is visible
+                setTimeout(() => {
+                    renderChart();
+                }, 100);
+            }
         }
 
+        // Responsibilities Interactive View
         function showResponsibility(key) {
             const data = responsibilitiesData[key];
             const container = document.getElementById('resp-detail-card');
-            let tasksHtml = data.tasks.map(t => `<li class="flex items-start mb-2"><span class="mr-2 ${data.color}">•</span>${t}</li>`).join('');
             
-            container.innerHTML = `<div class="fade-in">
-                <div class="flex items-center mb-4 border-b pb-2 ${data.border}">
-                    <span class="text-3xl mr-3">${data.icon}</span>
-                    <h3 class="text-xl font-bold ${data.color}">${data.title}</h3>
+            let tasksHtml = data.tasks.map(task => 
+                `<li class="flex items-start mb-3">
+                    <span class="mr-2 mt-1 ${data.color}">•</span>
+                    <span class="text-gray-700">${task}</span>
+                </li>`
+            ).join('');
+
+            container.innerHTML = `
+                <div class="h-full flex flex-col fade-in">
+                    <div class="flex items-center mb-6 pb-4 border-b ${data.border}">
+                        <span class="text-4xl mr-4">${data.icon}</span>
+                        <h3 class="text-xl font-bold ${data.color}">${data.title}</h3>
+                    </div>
+                    <div class="bg-${data.bg} rounded-lg p-6 flex-grow">
+                        <ul class="space-y-2">
+                            ${tasksHtml}
+                        </ul>
+                    </div>
                 </div>
-                <ul class="text-sm space-y-1">${tasksHtml}</ul>
-            </div>`;
+            `;
         }
 
-        function updateWorkflow(idx) {
-            document.querySelectorAll('.step-btn').forEach((btn, i) => {
-                btn.classList.toggle('active-step', i === idx);
+        // Workflow Interactive View
+        function updateWorkflow(stepIndex) {
+            // Update buttons
+            document.querySelectorAll('.step-btn').forEach((btn, idx) => {
+                if(idx === stepIndex) {
+                    btn.classList.add('active-step', 'bg-orange-50', 'text-orange-700');
+                } else {
+                    btn.classList.remove('active-step', 'bg-orange-50', 'text-orange-700');
+                }
             });
-            const step = workflowSteps[idx];
-            document.getElementById('workflow-content').innerHTML = `<div class="fade-in">
-                <span class="text-xs font-bold uppercase px-2 py-1 rounded ${step.color}">Responsável: ${step.owner}</span>
-                <h3 class="text-2xl font-bold mt-4 mb-2">${step.title}</h3>
-                <p class="text-gray-600">${step.desc}</p>
-            </div>`;
+
+            // Update Content
+            const step = workflowSteps[stepIndex];
+            const container = document.getElementById('workflow-content');
+            
+            container.innerHTML = `
+                <div class="fade-in">
+                    <div class="flex items-center mb-4">
+                        <span class="text-xs font-bold uppercase tracking-wider px-2 py-1 rounded ${step.color} mr-3">Responsável: ${step.owner}</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">${step.title}</h3>
+                    <p class="text-lg text-gray-600 leading-relaxed">${step.desc}</p>
+                </div>
+            `;
         }
 
-        let chart;
+        // --- CHART INITIALIZATION ---
+        let radarChartInstance = null;
+
         function renderChart() {
             const ctx = document.getElementById('profileRadarChart');
-            if (chart) chart.destroy();
-            chart = new Chart(ctx, {
+            
+            // Destroy existing if re-rendering
+            if (radarChartInstance) {
+                radarChartInstance.destroy();
+            }
+
+            radarChartInstance = new Chart(ctx, {
                 type: 'radar',
                 data: {
-                    labels: ['Estratégia', 'Comercial', 'Operação', 'Análise', 'Pessoas', 'Financeiro'],
-                    datasets: [
-                        { label: 'Letícia', data: [90, 95, 40, 60, 85, 90], backgroundColor: 'rgba(234, 88, 12, 0.2)', borderColor: '#EA580C' },
-                        { label: 'Larissa', data: [50, 30, 95, 95, 75, 50], backgroundColor: 'rgba(37, 99, 235, 0.2)', borderColor: '#2563EB' }
-                    ]
+                    labels: ['Estratégia', 'Comercial', 'Operacional', 'Analítico', 'Gestão de Pessoas', 'Financeiro'],
+                    datasets: [{
+                        label: 'Letícia',
+                        data: [90, 95, 30, 50, 80, 85],
+                        fill: true,
+                        backgroundColor: 'rgba(234, 88, 12, 0.2)', // Orange
+                        borderColor: 'rgb(234, 88, 12)',
+                        pointBackgroundColor: 'rgb(234, 88, 12)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(234, 88, 12)'
+                    }, {
+                        label: 'Larissa',
+                        data: [40, 30, 95, 90, 70, 40],
+                        fill: true,
+                        backgroundColor: 'rgba(37, 99, 235, 0.2)', // Blue
+                        borderColor: 'rgb(37, 99, 235)',
+                        pointBackgroundColor: 'rgb(37, 99, 235)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(37, 99, 235)'
+                    }]
                 },
-                options: { maintainAspectRatio: false, scales: { r: { suggestedMin: 0, suggestedMax: 100, ticks: { display: false } } } }
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    elements: {
+                        line: { borderWidth: 3 }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: { display: true },
+                            suggestedMin: 0,
+                            suggestedMax: 100,
+                            ticks: { display: false } // Hide numbers for cleaner look
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
             });
         }
 
-        // Corrigido: Adicionada a função flipCard que estava faltando
-        function flipCard(el) {
-            // No layout atual, o card vira ao passar o mouse (group-hover), 
-            // mas mantemos a função para garantir compatibilidade com dispositivos de toque.
-        }
-
+        // --- INITIALIZATION ON LOAD ---
         document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Workflow at step 0
             updateWorkflow(0);
+            
+            // Render Chart
             renderChart();
+            
+            // Show initial responsibility to populate empty state
             showResponsibility('commercial');
         });
+
     </script>
 </body>
 </html>
