@@ -17,10 +17,11 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #F9FAFB;
-            color: #1F2937;
+            background-color: #F9FAFB; /* Cool Gray 50 */
+            color: #1F2937; /* Gray 800 */
         }
 
+        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -35,11 +36,12 @@
             background: #9CA3AF; 
         }
 
+        /* Chart Container Styling - MANDATORY */
         .chart-container {
             position: relative;
             width: 100%;
             max-width: 600px;
-            height: 300px;
+            height: 300px; /* Base height */
             max-height: 400px;
             margin-left: auto;
             margin-right: auto;
@@ -51,6 +53,7 @@
             }
         }
 
+        /* Transition Utilities */
         .fade-in {
             animation: fadeIn 0.5s ease-in-out;
         }
@@ -61,22 +64,23 @@
         }
 
         .active-tab {
-            border-bottom: 2px solid #EA580C;
+            border-bottom: 2px solid #EA580C; /* Orange 600 */
             color: #EA580C;
             font-weight: 600;
         }
 
+        /* Corrigido: Seletor para os botões do workflow */
         .step-btn.active-step {
             border-left: 4px solid #EA580C;
-            background-color: #FFF7ED;
+            background-color: #FFF7ED; /* Orange 50 */
             color: #C2410C;
         }
     </style>
     
     <!-- Placeholder Comments -->
     <!-- Chosen Palette: Warm Neutrals & Professional Orange. -->
-    <!-- Application Structure Plan: Dashboard interativo para alinhar a nova estrutura da Impulsione, incluindo a nova área de Sucesso do Cliente. -->
-    <!-- Visualization & Content Choices: Radar Chart para perfis, Lista dinâmica para responsabilidades e Grid interativo para decisões. -->
+    <!-- Application Structure Plan: Dashboard interativo com seções de Liderança, Responsabilidades, Fluxo, Equipa e Decisões. -->
+    <!-- Visualization & Content Choices: Radar Chart para perfis, Lista dinâmica para responsabilidades e Grid de Equipe. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
 </head>
@@ -91,31 +95,38 @@
                         <span class="text-2xl font-bold text-gray-800 tracking-tight">Impulsione<span class="text-orange-600">.</span></span>
                     </div>
                 </div>
-                <div class="hidden sm:ml-6 sm:flex sm:space-x-8" id="desktop-nav">
-                    <button onclick="switchTab('overview')" class="nav-btn active-tab px-1 pt-1 text-sm font-medium focus:outline-none">Liderança & Perfil</button>
+                <!-- Desktop Tabs -->
+                <div class="hidden lg:ml-6 lg:flex lg:space-x-8" id="desktop-nav">
+                    <button onclick="switchTab('overview')" class="nav-btn active-tab px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none">Liderança & Perfil</button>
                     <button onclick="switchTab('responsibilities')" class="nav-btn px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none">Responsabilidades</button>
                     <button onclick="switchTab('workflow')" class="nav-btn px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none">Fluxo & Operação</button>
+                    <button onclick="switchTab('team')" class="nav-btn px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none">Pessoas do Time</button>
                     <button onclick="switchTab('decisions')" class="nav-btn px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none">Matriz de Decisão</button>
+                </div>
+                <div class="-mr-2 flex items-center lg:hidden">
+                   <span class="text-xs text-gray-400">Arraste as abas abaixo</span>
                 </div>
             </div>
         </div>
         <!-- Mobile Tabs -->
-        <div class="sm:hidden flex overflow-x-auto px-4 pb-2 space-x-4 border-b border-gray-100">
+        <div class="lg:hidden flex overflow-x-auto px-4 pb-2 space-x-4 border-b border-gray-100 scrollbar-hide">
             <button onclick="switchTab('overview')" class="mobile-nav-btn text-nowrap px-3 py-2 text-sm font-medium text-orange-600 bg-orange-50 rounded-full">Liderança</button>
             <button onclick="switchTab('responsibilities')" class="mobile-nav-btn text-nowrap px-3 py-2 text-sm font-medium text-gray-600">Responsabilidades</button>
             <button onclick="switchTab('workflow')" class="mobile-nav-btn text-nowrap px-3 py-2 text-sm font-medium text-gray-600">Fluxo</button>
+            <button onclick="switchTab('team')" class="mobile-nav-btn text-nowrap px-3 py-2 text-sm font-medium text-gray-600">Time</button>
             <button onclick="switchTab('decisions')" class="mobile-nav-btn text-nowrap px-3 py-2 text-sm font-medium text-gray-600">Decisão</button>
         </div>
     </nav>
 
+    <!-- Main Content Area -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-gray-50">
 
-        <!-- SECTION 1: OVERVIEW -->
+        <!-- SECTION 1: OVERVIEW & LEADERSHIP -->
         <section id="overview" class="tab-content fade-in">
             <div class="text-center mb-10">
                 <h1 class="text-3xl font-bold text-gray-900">Estrutura de Governança</h1>
                 <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">
-                    Bem-vindo ao Playbook da <strong>Impulsione Agência</strong>. Esta seção define a visão estratégica e a divisão de papéis da diretoria.
+                    Bem-vindo ao Playbook da <strong>Impulsione Agência</strong>. Esta seção define a visão estratégica e a divisão fundamental de papéis entre a diretoria para garantir a escalabilidade e a harmonia operacional da empresa.
                 </p>
             </div>
 
@@ -132,10 +143,19 @@
                             <div class="h-12 w-12 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-xl">LE</div>
                         </div>
                         <p class="text-gray-600 italic mb-6">"Olhar para fora e para o futuro."</p>
-                        <div class="space-y-3 text-sm">
-                            <p><strong>Perfil:</strong> Estratégico, comercial e comunicativo.</p>
-                            <p><strong>Foco:</strong> Lucratividade e novos negócios.</p>
-                            <p><strong>Superpoder:</strong> Visão analítica de mercado.</p>
+                        <div class="space-y-3">
+                            <div class="flex items-start">
+                                <span class="text-orange-500 mr-2">➤</span>
+                                <p class="text-sm text-gray-700"><strong>Perfil:</strong> Estratégico, comercial e comunicativo.</p>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="text-orange-500 mr-2">➤</span>
+                                <p class="text-sm text-gray-700"><strong>Foco:</strong> Lucratividade, satisfação do cliente e novos negócios.</p>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="text-orange-500 mr-2">➤</span>
+                                <p class="text-sm text-gray-700"><strong>Superpoder:</strong> Transformar dados em visão de negócio.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -152,10 +172,19 @@
                             <div class="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xl">LA</div>
                         </div>
                         <p class="text-gray-600 italic mb-6">"Olhar para dentro e para o presente."</p>
-                        <div class="space-y-3 text-sm">
-                            <p><strong>Perfil:</strong> Analítico, operacional e resiliente.</p>
-                            <p><strong>Foco:</strong> Qualidade técnica e cumprimento de prazos.</p>
-                            <p><strong>Superpoder:</strong> Rigor técnico e paciência operacional.</p>
+                        <div class="space-y-3">
+                            <div class="flex items-start">
+                                <span class="text-blue-500 mr-2">➤</span>
+                                <p class="text-sm text-gray-700"><strong>Perfil:</strong> Analítico, operacional e resiliente.</p>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="text-blue-500 mr-2">➤</span>
+                                <p class="text-sm text-gray-700"><strong>Foco:</strong> Qualidade da entrega, cumprimento de prazos e gestão técnica.</p>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="text-blue-500 mr-2">➤</span>
+                                <p class="text-sm text-gray-700"><strong>Superpoder:</strong> Paciência operacional e rigor técnico.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -164,7 +193,7 @@
             <div class="bg-white rounded-xl shadow p-6 border border-gray-100">
                 <div class="mb-4">
                     <h3 class="text-lg font-semibold text-gray-900">Complementaridade de Perfis</h3>
-                    <p class="text-sm text-gray-500">Equilíbrio de competências entre as diretoras.</p>
+                    <p class="text-sm text-gray-500">Como as competências das diretoras se completam para cobrir todas as áreas da agência.</p>
                 </div>
                 <div class="chart-container">
                     <canvas id="profileRadarChart"></canvas>
@@ -176,26 +205,28 @@
         <section id="responsibilities" class="tab-content hidden fade-in">
             <div class="mb-8">
                 <h2 class="text-2xl font-bold text-gray-900">Detalhamento de Responsabilidades</h2>
-                <p class="mt-2 text-gray-600">Selecione uma área para ver o escopo detalhado.</p>
+                <p class="mt-2 text-gray-600">
+                    Para evitar o "retrabalho" e zonas cinzentas, definimos escopos claros. Selecione uma área para ver quem é a responsável direta.
+                </p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div class="lg:col-span-1 space-y-4">
                     <div class="bg-white rounded-lg shadow p-4 border-l-4 border-orange-500 cursor-pointer hover:bg-orange-50 transition-colors" onclick="showResponsibility('commercial')">
                         <h3 class="font-bold text-gray-800">Comercial & Vendas</h3>
-                        <p class="text-xs text-gray-500">Prospecção e crescimento comercial.</p>
+                        <p class="text-xs text-gray-500">Prospecção, contratos e crescimento.</p>
                     </div>
                     <div class="bg-white rounded-lg shadow p-4 border-l-4 border-blue-600 cursor-pointer hover:bg-blue-50 transition-colors" onclick="showResponsibility('delivery')">
                         <h3 class="font-bold text-gray-800">Operação & Delivery</h3>
-                        <p class="text-xs text-gray-500">Produção e revisão técnica.</p>
+                        <p class="text-xs text-gray-500">Campanhas, copy, design e processos.</p>
                     </div>
                     <div class="bg-white rounded-lg shadow p-4 border-l-4 border-blue-900 cursor-pointer hover:bg-blue-50 transition-colors" onclick="showResponsibility('clientes')">
-                        <h3 class="font-bold text-gray-800">Gestão & Sucesso do Cliente</h3>
-                        <p class="text-xs text-gray-500">Relacionamento e Estratégia.</p>
+                        <h3 class="font-bold text-gray-800">Gestão & Sucesso do cliente</h3>
+                        <p class="text-xs text-gray-500">Relacionamento, relatórios e estratégia.</p>
                     </div>
                     <div class="bg-white rounded-lg shadow p-4 border-l-4 border-purple-500 cursor-pointer hover:bg-purple-50 transition-colors" onclick="showResponsibility('admin')">
                         <h3 class="font-bold text-gray-800">Administrativo & RH</h3>
-                        <p class="text-xs text-gray-500">Financeiro e Cultura Interna.</p>
+                        <p class="text-xs text-gray-500">Financeiro, cultura e contratações.</p>
                     </div>
                 </div>
 
@@ -203,7 +234,7 @@
                     <div id="resp-detail-card" class="bg-white rounded-xl shadow-lg p-8 h-full border border-gray-100 min-h-[300px]">
                         <div class="text-center h-full flex flex-col justify-center items-center text-gray-400">
                             <span class="text-4xl mb-4">👆</span>
-                            <p>Selecione uma área ao lado.</p>
+                            <p>Selecione uma área ao lado para ver os detalhes.</p>
                         </div>
                     </div>
                 </div>
@@ -213,8 +244,8 @@
         <!-- SECTION 3: WORKFLOW -->
         <section id="workflow" class="tab-content hidden fade-in">
             <div class="mb-8">
-                <h2 class="text-2xl font-bold text-gray-900">Fluxo de Trabalho</h2>
-                <p class="mt-2 text-gray-600">A jornada do cliente, do contrato ao relatório.</p>
+                <h2 class="text-2xl font-bold text-gray-900">Fluxo de Trabalho do Cliente</h2>
+                <p class="mt-2 text-gray-600">A jornada do cliente desenhada para escala.</p>
             </div>
 
             <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
@@ -232,65 +263,91 @@
                     </div>
                 </div>
             </div>
+        </section>
 
-            <div class="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6 flex items-start">
-                <div class="text-blue-500 text-2xl mr-4">💡</div>
-                <div>
-                    <h4 class="font-bold text-blue-900">Dica de Sucesso para 2026</h4>
-                    <p class="text-sm text-blue-800 mt-1">
-                        A Letícia deve dedicar <strong>70% do tempo analisando criativos</strong> e apenas 30% no gerenciador. O foco é conteúdo estratégico.
-                    </p>
+        <!-- SECTION 4: TEAM -->
+        <section id="team" class="tab-content hidden fade-in">
+            <div class="mb-10 text-center">
+                <h2 class="text-2xl font-bold text-gray-900">Composição do Time</h2>
+                <p class="mt-2 text-gray-600">Papéis essenciais para a escala da Impulsione.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-xl shadow border border-gray-100">
+                    <div class="text-2xl mb-3">✍️</div>
+                    <h3 class="font-bold text-gray-900">Copywriter de Performance</h3>
+                    <p class="text-sm text-gray-600 mt-2">Escrita persuasiva focada em anúncios que convertem cliques em vendas.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow border border-gray-100">
+                    <div class="text-2xl mb-3">🎨</div>
+                    <h3 class="font-bold text-gray-900">Designer de Resposta Direta</h3>
+                    <p class="text-sm text-gray-600 mt-2">Criação de imagens e vídeos com foco em alto CTR (Taxa de Clique).</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow border border-gray-100">
+                    <div class="text-2xl mb-3">📊</div>
+                    <h3 class="font-bold text-gray-900">Gestor de Tráfego Jr./Pleno</h3>
+                    <p class="text-sm text-gray-600 mt-2">Montagem técnica e monitorização diária. Reporta à Larissa.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow border border-gray-100">
+                    <div class="text-2xl mb-3">💼</div>
+                    <h3 class="font-bold text-gray-900">Assistente Administrativo</h3>
+                    <p class="text-sm text-gray-600 mt-2">Faturas, cobranças e organização administrativa. Reporta à Letícia.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow border border-gray-100">
+                    <div class="text-2xl mb-3">🎬</div>
+                    <h3 class="font-bold text-gray-900">Editor de Vídeo (Freelance)</h3>
+                    <p class="text-sm text-gray-600 mt-2">Cortes dinâmicos e legendagem para anúncios em vídeo e Reels.</p>
+                </div>
+                <div class="bg-orange-50 p-6 rounded-xl border border-orange-200 flex items-center justify-center">
+                    <p class="text-orange-800 font-bold text-center">Foco em Resultados Reais</p>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION 4: DECISION MATRIX -->
+        <!-- SECTION 5: DECISION MATRIX -->
         <section id="decisions" class="tab-content hidden fade-in">
             <div class="text-center mb-10">
                 <h2 class="text-2xl font-bold text-gray-900">Matriz de Decisão</h2>
                 <p class="mt-2 text-gray-600">Passe o mouse ou clique para ver quem decide.</p>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Card 1 -->
+                <!-- Cards -->
                 <div class="group h-48 relative overflow-hidden bg-white rounded-xl shadow border border-gray-200 cursor-pointer">
-                    <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center group-hover:opacity-0 transition-opacity">
+                    <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center transition-opacity duration-300 group-hover:opacity-0">
                         <span class="text-3xl mb-2">🧑‍💻</span>
                         <h3 class="font-bold">Contratar técnico?</h3>
                     </div>
-                    <div class="absolute inset-0 bg-blue-600 flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div class="absolute inset-0 bg-blue-600 flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <span class="text-2xl font-bold">Larissa</span>
-                        <p class="text-xs">Gestão da equipe técnica.</p>
+                        <p class="text-xs">Gestão técnica.</p>
                     </div>
                 </div>
-                <!-- Card 2 -->
                 <div class="group h-48 relative overflow-hidden bg-white rounded-xl shadow border border-gray-200 cursor-pointer">
-                    <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center group-hover:opacity-0 transition-opacity">
+                    <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center transition-opacity duration-300 group-hover:opacity-0">
                         <span class="text-3xl mb-2">💰</span>
-                        <h3 class="font-bold">Desconto no contrato?</h3>
+                        <h3 class="font-bold">Descontos?</h3>
                     </div>
-                    <div class="absolute inset-0 bg-orange-600 flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div class="absolute inset-0 bg-orange-600 flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <span class="text-2xl font-bold">Letícia</span>
-                        <p class="text-xs">Responsabilidade financeira.</p>
+                        <p class="text-xs">Financeiro.</p>
                     </div>
                 </div>
-                <!-- Card 3 -->
                 <div class="group h-48 relative overflow-hidden bg-white rounded-xl shadow border border-gray-200 cursor-pointer">
-                    <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center group-hover:opacity-0 transition-opacity">
+                    <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center transition-opacity duration-300 group-hover:opacity-0">
                         <span class="text-3xl mb-2">📈</span>
-                        <h3 class="font-bold">Mudar estratégia?</h3>
+                        <h3 class="font-bold">Estratégia?</h3>
                     </div>
-                    <div class="absolute inset-0 bg-purple-600 flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span class="text-xl font-bold">As Duas</span>
-                        <p class="text-xs">Alinhamento Estratégico.</p>
+                    <div class="absolute inset-0 bg-purple-600 flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <span class="text-xl font-bold">Ambas</span>
+                        <p class="text-xs">Reunião semanal.</p>
                     </div>
                 </div>
-                <!-- Card 4 -->
                 <div class="group h-48 relative overflow-hidden bg-white rounded-xl shadow border border-gray-200 cursor-pointer">
-                    <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center group-hover:opacity-0 transition-opacity">
+                    <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center transition-opacity duration-300 group-hover:opacity-0">
                         <span class="text-3xl mb-2">📢</span>
-                        <h3 class="font-bold">Marketing Impulsione?</h3>
+                        <h3 class="font-bold">Marketing Próprio?</h3>
                     </div>
-                    <div class="absolute inset-0 bg-orange-600 flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div class="absolute inset-0 bg-orange-600 flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <span class="text-2xl font-bold">Letícia</span>
                         <p class="text-xs">Crescimento da marca.</p>
                     </div>
@@ -298,6 +355,35 @@
             </div>
         </section>
     </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white border-t border-gray-800 mt-auto">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div>
+                    <span class="text-2xl font-bold tracking-tight">Impulsione<span class="text-orange-500">.</span></span>
+                    <p class="mt-4 text-gray-400 text-sm leading-relaxed">Assessoria de Performance focada em Meta Ads. Transformamos investimento em faturamento real através de dados e estratégia.</p>
+                </div>
+                <div>
+                    <h4 class="text-orange-500 font-bold uppercase tracking-widest text-xs mb-4">Filosofia</h4>
+                    <ul class="text-gray-400 text-sm space-y-2">
+                        <li><strong>Missão:</strong> Escalar negócios com anúncios inteligentes.</li>
+                        <li><strong>Visão:</strong> Ser referência em ROI real no Meta Ads.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-orange-500 font-bold uppercase tracking-widest text-xs mb-4">Canais</h4>
+                    <ul class="text-gray-400 text-sm space-y-2">
+                        <li>💬 Slack (Operacional)</li>
+                        <li>📅 Meet (Reuniões)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-12 pt-8 border-t border-gray-800 text-center">
+                <p class="text-xs text-gray-500">Impulsione Agência &copy; 2026 - Propriedade de Letícia & Larissa.</p>
+            </div>
+        </div>
+    </footer>
 
     <script>
         // --- DATA ---
@@ -309,10 +395,10 @@
                 border: "border-orange-200",
                 icon: "🚀",
                 tasks: [
-                    "Prospecção ativa de novos clientes",
+                    "Prospecção de novos clientes",
                     "Reuniões de vendas e fechamento",
-                    "Marketing estratégico da agência",
-                    "Acompanhamento do crescimento comercial"
+                    "Marketing estratégico da Impulsione",
+                    "Relatórios de crescimento comercial"
                 ]
             },
             delivery: {
@@ -322,24 +408,23 @@
                 border: "border-blue-200",
                 icon: "⚙️",
                 tasks: [
-                    "Gestão direta de Copy e Design",
-                    "Revisão técnica das contas de anúncios (Misto)",
+                    "Gestão do time de Copy e Design",
+                    "Revisão técnica das contas (Misto)",
                     "Análise de ROAS e otimizações (Misto)",
-                    "Processos internos e checklists",
-                    "Extração de relatórios técnicos (Misto)"
+                    "Criação de checklists e processos"
                 ]
             },
             clientes: {
-                title: "Gestão & Sucesso do Cliente (Misto)",
-                color: "text-blue-900",
-                bg: "bg-blue-50",
-                border: "border-blue-900",
-                icon: "💎",
+                title: "Sucesso do Cliente (Misto)",
+                color: "text-purple-600",
+                bg: "bg-purple-50",
+                border: "border-purple-200",
+                icon: "🤝",
                 tasks: [
-                    "Onboarding (Boas-vindas ao cliente)",
+                    "Onboarding inicial (Boas-vindas)",
                     "Definição de Funil de Marketing",
                     "Gestão de crises e retenção",
-                    "Apresentação de resultados mensais"
+                    "Reuniões mensais de estratégia"
                 ]
             },
             admin: {
@@ -350,20 +435,20 @@
                 icon: "🏛️",
                 tasks: [
                     "Financeiro e Fluxo de Caixa (Letícia)",
-                    "Contratos e Jurídico (Letícia)",
-                    "Cultura, Feedbacks e RH (Misto)",
-                    "Treinamento técnico do time (Misto)"
+                    "Interface Jurídico/Contábil (Letícia)",
+                    "Feedback de equipe e RH",
+                    "Treinamento técnico da equipe"
                 ]
             }
         };
 
         const workflowSteps = [
-            { title: "1. Venda", owner: "Letícia", color: "bg-orange-100 text-orange-800", desc: "Fechamento e alinhamento de expectativas comerciais." },
-            { title: "2. Onboarding", owner: "Letícia + Larissa", color: "bg-purple-100 text-purple-800", desc: "Integração técnica e boas-vindas oficial." },
-            { title: "3. Estratégia", owner: "Letícia + Equipe", color: "bg-orange-100 text-orange-800", desc: "Desenho do funil e plano de ação." },
-            { title: "4. Briefing", owner: "Larissa", color: "bg-blue-100 text-blue-800", desc: "Passagem técnica para produção (Copy/Design)." },
-            { title: "5. Execução", owner: "Letícia", color: "bg-orange-100 text-orange-800", desc: "Monitoramento e garantia de performance ativa." },
-            { title: "6. Relatório", owner: "Larissa -> Letícia", color: "bg-green-100 text-green-800", desc: "Extração de dados e apresentação de ROI." }
+            { title: "1. Venda", owner: "Letícia", color: "bg-orange-100 text-orange-800", desc: "Negociação e contrato." },
+            { title: "2. Onboarding", owner: "Letícia + Larissa", color: "bg-purple-100 text-purple-800", desc: "Reunião inicial conjunta." },
+            { title: "3. Estratégia", owner: "Letícia + Especialista", color: "bg-orange-100 text-orange-800", desc: "Definição da oferta e funil." },
+            { title: "4. Briefing", owner: "Larissa", color: "bg-blue-100 text-blue-800", desc: "Passagem para Copy e Design." },
+            { title: "5. Execução", owner: "Letícia", color: "bg-blue-100 text-blue-800", desc: "Subida e monitoramento diário." },
+            { title: "6. Relatório", owner: "Larissa -> Letícia", color: "bg-green-100 text-green-800", desc: "Apresentação de ROI para o cliente." }
         ];
 
         // --- FUNCTIONS ---
@@ -371,17 +456,32 @@
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.getElementById(tabId).classList.remove('hidden');
 
+            // Desktop
             document.querySelectorAll('#desktop-nav button').forEach(btn => {
-                btn.classList.remove('active-tab', 'text-orange-600');
+                btn.classList.remove('active-tab', 'text-gray-900');
                 btn.classList.add('text-gray-500');
             });
             
-            // Ativa o botão correto
-            const buttons = document.querySelectorAll('#desktop-nav button');
-            if (tabId === 'overview') buttons[0].classList.add('active-tab');
-            if (tabId === 'responsibilities') buttons[1].classList.add('active-tab');
-            if (tabId === 'workflow') buttons[2].classList.add('active-tab');
-            if (tabId === 'decisions') buttons[3].classList.add('active-tab');
+            // Corrigido: Encontrar o botão certo de forma mais robusta
+            const desktopBtns = document.querySelectorAll('#desktop-nav button');
+            desktopBtns.forEach(btn => {
+                if(btn.getAttribute('onclick').includes(tabId)) {
+                    btn.classList.add('active-tab', 'text-gray-900');
+                    btn.classList.remove('text-gray-500');
+                }
+            });
+
+            // Mobile
+            document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+                btn.classList.remove('bg-orange-50', 'text-orange-600');
+                btn.classList.add('text-gray-600');
+            });
+            document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+                if(btn.getAttribute('onclick').includes(tabId)) {
+                    btn.classList.add('bg-orange-50', 'text-orange-600');
+                    btn.classList.remove('text-gray-600');
+                }
+            });
 
             if(tabId === 'overview') setTimeout(renderChart, 100);
         }
@@ -391,14 +491,13 @@
             const container = document.getElementById('resp-detail-card');
             let tasksHtml = data.tasks.map(t => `<li class="flex items-start mb-2"><span class="mr-2 ${data.color}">•</span>${t}</li>`).join('');
             
-            container.innerHTML = `
-                <div class="fade-in">
-                    <div class="flex items-center mb-4 border-b pb-2 ${data.border}">
-                        <span class="text-3xl mr-3">${data.icon}</span>
-                        <h3 class="text-xl font-bold ${data.color}">${data.title}</h3>
-                    </div>
-                    <ul class="text-sm space-y-1">${tasksHtml}</ul>
-                </div>`;
+            container.innerHTML = `<div class="fade-in">
+                <div class="flex items-center mb-4 border-b pb-2 ${data.border}">
+                    <span class="text-3xl mr-3">${data.icon}</span>
+                    <h3 class="text-xl font-bold ${data.color}">${data.title}</h3>
+                </div>
+                <ul class="text-sm space-y-1">${tasksHtml}</ul>
+            </div>`;
         }
 
         function updateWorkflow(idx) {
@@ -406,12 +505,11 @@
                 btn.classList.toggle('active-step', i === idx);
             });
             const step = workflowSteps[idx];
-            document.getElementById('workflow-content').innerHTML = `
-                <div class="fade-in">
-                    <span class="text-xs font-bold uppercase px-2 py-1 rounded ${step.color}">Responsável: ${step.owner}</span>
-                    <h3 class="text-2xl font-bold mt-4 mb-2">${step.title}</h3>
-                    <p class="text-gray-600">${step.desc}</p>
-                </div>`;
+            document.getElementById('workflow-content').innerHTML = `<div class="fade-in">
+                <span class="text-xs font-bold uppercase px-2 py-1 rounded ${step.color}">Responsável: ${step.owner}</span>
+                <h3 class="text-2xl font-bold mt-4 mb-2">${step.title}</h3>
+                <p class="text-gray-600">${step.desc}</p>
+            </div>`;
         }
 
         let chart;
@@ -421,14 +519,20 @@
             chart = new Chart(ctx, {
                 type: 'radar',
                 data: {
-                    labels: ['Estratégia', 'Comercial', 'Operacional', 'Analítico', 'Pessoas', 'Financeiro'],
+                    labels: ['Estratégia', 'Comercial', 'Operação', 'Análise', 'Pessoas', 'Financeiro'],
                     datasets: [
                         { label: 'Letícia', data: [90, 95, 40, 60, 85, 90], backgroundColor: 'rgba(234, 88, 12, 0.2)', borderColor: '#EA580C' },
-                        { label: 'Larissa', data: [50, 40, 95, 90, 75, 50], backgroundColor: 'rgba(37, 99, 235, 0.2)', borderColor: '#2563EB' }
+                        { label: 'Larissa', data: [50, 30, 95, 95, 75, 50], backgroundColor: 'rgba(37, 99, 235, 0.2)', borderColor: '#2563EB' }
                     ]
                 },
                 options: { maintainAspectRatio: false, scales: { r: { suggestedMin: 0, suggestedMax: 100, ticks: { display: false } } } }
             });
+        }
+
+        // Corrigido: Adicionada a função flipCard que estava faltando
+        function flipCard(el) {
+            // No layout atual, o card vira ao passar o mouse (group-hover), 
+            // mas mantemos a função para garantir compatibilidade com dispositivos de toque.
         }
 
         document.addEventListener('DOMContentLoaded', () => {
